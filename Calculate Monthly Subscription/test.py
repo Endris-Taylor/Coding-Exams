@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from . import main
+from . import monthly_charge
 
 
 users = [
@@ -28,11 +28,16 @@ plan = {
 
 no_users = []
 
+
 # Note: the class must be called Test
 class Test(unittest.TestCase):
-  def test_works_when_no_users_are_active(self):
-    self.assertEqual(main.monthly_charge('2018-10', plan, users), 0)
+    def test_works_when_no_users_are_active(self):
+        self.assertEqual(monthly_charge('2018-10', plan, users), 0)
 
-  def test_works_when_the_active_users_are_active_the_entire_month(self):
-    expected_user_count = 2
-    self.assertAlmostEqual(main.monthly_charge('2020-12', plan, users), expected_user_count * 5_000, delta=1)
+    def test_works_when_the_active_users_are_active_the_entire_month(self):
+        expected_user_count = 2
+        self.assertAlmostEqual(monthly_charge('2020-12', plan, users), expected_user_count * 5_000, delta=1)
+
+
+if __name__ == "__main__":
+    unittest.main()
