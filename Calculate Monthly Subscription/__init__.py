@@ -3,8 +3,8 @@ import calendar
 
 
 def monthly_charge(month, subscription, users) -> int:
-
-    """ Computes the monthly charge for a given subscription.
+    """
+    Computes the monthly charge for a given subscription.
 
     @rtype: int
     @returns: the total monthly bill for the customer in cents, rounded
@@ -62,15 +62,15 @@ def monthly_charge(month, subscription, users) -> int:
     day_one: datetime.date = first_day_of_month(temp_date)
     day_n: datetime.date = last_day_of_month(temp_date)
 
-    temp_date = day_one
-    while temp_date <= day_n:
-        active: int = 0
-        for user in users:
-            if user['activated_on'] <= temp_date <= user.get('deactivated_on', day_n):
-                active += 1
+    for user in users:
+        start_date = day_one if (user['activated_on'] <= day_one) else user['activated_on']
+        limit_date = user.get('deactivated_on') if (user.get('deactivated_on') is not None) else day_n
 
-        return_amount += (active * int(subscription['monthly_price_in_cents']))
-        temp_date = next_day(temp_date)
+        time_active = limit_date - start_date
+        if time_active.days > 0:
+            # If there was a daily rate you would do the following:
+            # return_amount += (time_active.days * int(subscription['monthly_price_in_cents']))
+            return_amount += (1 * int(subscription['monthly_price_in_cents']))
 
     return return_amount  # Removes the decimal if present
 
